@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import type { Expense } from "../types/expense.type";
 
-const fakeExpenses: Expense[] = [];
+export const fakeExpenses: Expense[] = [];
 
 export function generateFakeExpenses(): Expense[] {
   for (let i = 0; i < 20; i++) {
