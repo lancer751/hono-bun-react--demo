@@ -8,7 +8,7 @@ export function generateFakeExpenses(): Expense[] {
     const expense = {
       id: faker.string.uuid(),
       title: faker.book.title(),
-      amount: Number(faker.finance.amount({ min: 500, max: 20000 })),
+      amount: Number(faker.finance.amount({ min: 500, max: 5000 })),
     };
     fakeExpenses.push(expense);
   }

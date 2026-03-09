@@ -1,7 +1,24 @@
-import app from "./app"
+import app from "./app";
+const port = Number(process.env.PORT) || 8080;
 
-const server  = Bun.serve({
-    fetch: app.fetch
-})
+Bun.serve({
+  port,
+  development: true,
+  fetch: app.fetch,
+  error(err) {
+    let message = "";
 
-export default server
+    if (err instanceof Error) {
+      message = err.stack || err.message;
+    } else {
+      try {
+        message = JSON.stringify(err, null, 2);
+      } catch {
+        message = String(err);
+      }
+    }
+    return new Response(`<pre>${message}</pre>`, {
+      headers: { "Content-Type": "text/html" },
+    });
+  },
+});
