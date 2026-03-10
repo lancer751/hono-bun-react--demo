@@ -1,3 +1,4 @@
+import { Hono } from "hono";
 import app from "../server/app";
 import { handle } from "hono/vercel";
 
