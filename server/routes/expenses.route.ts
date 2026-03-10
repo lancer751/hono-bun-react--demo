@@ -28,7 +28,6 @@ export const expensesRoute = new Hono()
     if (fakeExpenses.length === 0) {
       generateFakeExpenses();
     }
-    console.log(fakeExpenses)
     const total = fakeExpenses.reduce(
       (acc, expense) => (expense.amount + acc),
       0,
