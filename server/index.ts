@@ -1,8 +1,6 @@
 import app from "./app";
-const port = Number(process.env.PORT) || 8080;
 
 Bun.serve({
-  port,
   development: true,
   fetch: app.fetch,
   error(err) {
