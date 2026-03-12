@@ -25,14 +25,19 @@ export const expensesRoute = new Hono()
     return c.json({ expenses });
   })
   .get("/total-spent", async (c) => {
+    await new Promise((res) => setTimeout(res, 2000));
+
     if (fakeExpenses.length === 0) {
       generateFakeExpenses();
     }
     const total = fakeExpenses.reduce(
-      (acc, expense) => (expense.amount + acc),
+      (acc, expense) => expense.amount + acc,
       0,
     );
-    return c.json({ total });
+
+    const roundedTotal = Number(total.toFixed(2))
+
+    return c.json({ total: roundedTotal });
   })
   .post("/", zValidator("json", createPostSchema), async (c) => {
     const data = await c.req.valid("json");

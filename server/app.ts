@@ -11,9 +11,9 @@ app.get("/", (c) => {
     return c.text("Running on vercel")
 })
 // serving all files from folder dist
-// app.get("*", serveStatic({root: "./frontend/dist"}))
-// // serving index.html as fallback in case one page doesn't match
-// app.get("*", serveStatic({path: "./frontend/dist/index.html"}))
+app.get("*", serveStatic({root: "./frontend/dist"}))
+// serving index.html as fallback in case one page doesn't match
+app.get("*", serveStatic({path: "./frontend/dist/index.html"}))
 
 export default app
 export type ApiRoutes = typeof apiRoutes
