@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm, type AnyFieldApi } from "@tanstack/react-form";
 
-export const Route = createFileRoute("/create-expense")({
+export const Route = createFileRoute("/_authenticated/create-expense")({
   component: CreateExpense,
 });
 

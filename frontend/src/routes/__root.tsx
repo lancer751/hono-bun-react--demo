@@ -1,4 +1,13 @@
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
+import {
+  Link,
+  Outlet,
+  createRootRouteWithContext,
+} from "@tanstack/react-router";
+
+interface MyRouterContext {
+  queryClient: QueryClient;
+}
 
 const RootLayout = () => (
   <>
@@ -24,8 +33,13 @@ function NavBar() {
       <Link to="/create-expense" className="[&.active]:font-bold">
         Create Expense
       </Link>
+      <Link to="/profile" className="[&.active]:font-bold">
+        Profile
+      </Link>
     </div>
   );
 }
 
-export const Route = createRootRoute({ component: RootLayout });
+export const Route = createRootRouteWithContext<MyRouterContext>()({
+  component: RootLayout,
+});
