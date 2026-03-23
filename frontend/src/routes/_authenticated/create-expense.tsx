@@ -3,6 +3,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createFileRoute } from "@tanstack/react-router";
 import { useForm, type AnyFieldApi } from "@tanstack/react-form";
+import { useCreateExpense } from "@/services/expenses";
+import { createExpenseSchema } from "@server/sharedTypes";
+import { Calendar } from "@/components/ui/calendar";
 
 export const Route = createFileRoute("/_authenticated/create-expense")({
   component: CreateExpense,
@@ -20,14 +23,16 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 }
 
 function CreateExpense() {
+  const createExpense = useCreateExpense();
   const form = useForm({
     defaultValues: {
       title: "",
-      amount: 0,
+      amount: "0",
+      date: new Date().toISOString(),
     },
     onSubmit: async ({ value }) => {
-      await new Promise(res => setTimeout(res, 3000))
-      
+      await createExpense.mutate(value);
+
       console.log(value);
     },
   });
@@ -82,8 +87,7 @@ function CreateExpense() {
           <form.Field
             name="amount"
             validators={{
-              onChange: ({ value }) =>
-                value <= 0 ? "A valid number is required" : undefined,
+              onChange: createExpenseSchema.shape.amount,
             }}
             children={(field) => {
               return (
@@ -94,7 +98,7 @@ function CreateExpense() {
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.valueAsNumber)}
+                    onChange={(e) => field.handleChange(e.target.value)}
                     type="number"
                     placeholder="Enter the title"
                   />
@@ -102,6 +106,28 @@ function CreateExpense() {
                 </div>
               );
             }}
+          />
+        </div>
+
+        <div>
+          <form.Field
+            name="date"
+            validators={{
+              onChange: createExpenseSchema.shape.date,
+            }}
+            children={(field) => (
+              <div className="self-center">
+                <Calendar
+                  mode="single"
+                  selected={new Date(field.state.value)}
+                  onSelect={(date) =>
+                    field.handleChange((date ?? new Date()).toISOString())
+                  }
+                  className="rounded-md border"
+                />
+                <FieldInfo field={field}/>
+              </div>
+            )}
           />
         </div>
 

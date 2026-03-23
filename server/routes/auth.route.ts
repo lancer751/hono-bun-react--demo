@@ -4,11 +4,12 @@ import { getUser, kindeClient, sessionManager } from "../kinde";
 export const authRoute = new Hono()
   .get("/login", async (c) => {
     const loginUrl = await kindeClient.login(sessionManager(c));
-    return c.redirect(loginUrl.toString());
+    console.log(loginUrl)
+    return c.redirect(loginUrl);
   })
   .get("/register", async (c) => {
     const registerUrl = await kindeClient.register(sessionManager(c));
-    return c.redirect(registerUrl.toString());
+    return c.redirect(registerUrl);
   })
   .get("/callback", async (c) => {
     // execute every time when user register or login
@@ -18,6 +19,7 @@ export const authRoute = new Hono()
   })
   .get("/logout" , async (c) => {
     const logoutURL = await kindeClient.logout(sessionManager(c))
+    console.log("logoutURL: ", logoutURL)
     return c.redirect(logoutURL)
   })
   .get("/me", getUser, async (c) => {

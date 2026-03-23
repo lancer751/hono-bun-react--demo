@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { userQueryOptions } from "@/lib/api";
+import { userQueryOptions } from "@/services/user";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 const Login = () => {

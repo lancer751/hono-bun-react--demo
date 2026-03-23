@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import type { QueryClient } from "@tanstack/react-query";
 import {
   Link,
@@ -13,14 +14,17 @@ const RootLayout = () => (
   <>
     <NavBar />
     <hr />
+    <div className="py-10">
     <Outlet />
+      
+    </div>
     {/* <TanStackRouterDevtools /> */}
   </>
 );
 
 function NavBar() {
   return (
-    <div className="p-2 flex gap-4">
+    <div className="p-2 flex gap-6 items-center w-full justify-center">
       <Link to="/" className="[&.active]:font-bold">
         Home
       </Link>
@@ -36,6 +40,7 @@ function NavBar() {
       <Link to="/profile" className="[&.active]:font-bold">
         Profile
       </Link>
+      <Button className="bg-destructive text-white hover:bg-red-800">Logout</Button>
     </div>
   );
 }
