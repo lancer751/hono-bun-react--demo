@@ -7,7 +7,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
-import {createInsertSchema, createSelectSchema} from "drizzle-zod"
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import z from "zod";
 
 export const expenses = pgTable(
@@ -27,9 +27,13 @@ export const expenses = pgTable(
 
 // Zod Scheme for inserting a expense - Used for Api Requests
 export const insertExpensesSchema = createInsertSchema(expenses, {
-    title: z.string().min(3, {message: "Title must be at least 3 characters"}),
-    amount: z.string().regex(/^\d+(\.\d{1,2})?$/, {message: "Amount must be a valid monetary value"})
-})
+  title: z.string().min(3, { message: "Title must be at least 3 characters" }),
+  amount: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, {
+      message: "Amount must be a valid monetary value",
+    }),
+});
 
 // Zod schema for selecting expenses
-export const selectExpensesSchema = createSelectSchema(expenses)
+export const selectExpensesSchema = createSelectSchema(expenses);

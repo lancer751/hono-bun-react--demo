@@ -1,5 +1,6 @@
 import { api } from "@/lib/api";
 import { faker } from "@faker-js/faker";
+import {toast} from "sonner"
 import type { CreateExpense } from "@server/sharedTypes";
 import {
   queryOptions,
@@ -59,32 +60,38 @@ export function useCreateExpense() {
         createdAt: null,
       };
 
-      queryClient.setQueryData(["get-user-expenses"], (old: Expense[]) => {
+      queryClient.setQueryData(["get-user-expenses"], (old: {expenses: Expense[]}) => {
         if (!old) return old;
-
-        return [...old, optimisticExpense];
+        return [...old.expenses, optimisticExpense];
       });
 
       return { optimisticExpense };
     },
     onSuccess: (result, _variables, onMutateResult, _) => {
       // Replace optimistic todo in the todos list with the result
-      queryClient.setQueryData(["get-user-expenses"], (old: Expense[]) =>
-        old.map((exp) =>
+      queryClient.setQueryData(["get-user-expenses"], (old: {expenses: Expense[]}) =>
+        old.expenses.map((exp) =>
           exp.id === onMutateResult.optimisticExpense.id ? result : exp,
         ),
       );
+      toast("Expense Added", {
+        description: `${new Date().toISOString()}`
+      })
     },
     onError: (_error, _variables, onMutateResult, _) => {
+      console.log(_error)
       if (!onMutateResult) return;
       // Remove optimistic todo from the todos list
-      queryClient.setQueryData(["get-user-expenses"], (old: Expense[]) => {
+      queryClient.setQueryData(["get-user-expenses"], (old: {expenses: Expense[]}) => {
         if (!old) return old;
 
-        return old.filter(
+        return old.expenses.filter(
           (exp) => exp.id !== onMutateResult.optimisticExpense.id,
         );
       });
+      toast("Error while adding the expense", {
+        description: `${new Date().toISOString()}`
+      })
     },
   });
 }
@@ -105,6 +112,3 @@ export const getUserExpensesQueryOptions = queryOptions({
   queryFn: getUserExpenses,
   staleTime: 1000 * 60 * 5,
 });
-
-//
-// export const loadingCreateExpenseQueryOptions = queryOptions({});

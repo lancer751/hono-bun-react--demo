@@ -17,7 +17,6 @@ export const Route = createFileRoute("/_authenticated/expenses")({
 });
 
 async function getExpenses() {
-  await new Promise((res) => setTimeout(res, 3000));
   const response = await api.expenses.$get();
   if (!response.ok) {
     throw new Error("server error");
@@ -28,7 +27,7 @@ async function getExpenses() {
 
 function Expenses() {
   const { isPending, error, data } = useQuery({
-    queryKey: ["expenses"],
+    queryKey: ["get-user-expenses"],
     queryFn: getExpenses,
   });
 
@@ -64,7 +63,7 @@ function Expenses() {
                     </TableCell>
                   </TableRow>
                 ))
-            : data?.expenses.map((expense) => (
+            : data.expenses.map((expense) => (
                 <TableRow key={expense.id}>
                   <TableCell className="font-medium truncate max-w-40">
                     {expense.id}

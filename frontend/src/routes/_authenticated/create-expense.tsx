@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useForm, type AnyFieldApi } from "@tanstack/react-form";
 import { useCreateExpense } from "@/services/expenses";
 import { createExpenseSchema } from "@server/sharedTypes";
@@ -24,16 +24,17 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 
 function CreateExpense() {
   const createExpense = useCreateExpense();
+  const navigate = useNavigate()
   const form = useForm({
     defaultValues: {
       title: "",
       amount: "0",
       date: new Date().toISOString(),
     },
-    onSubmit: async ({ value }) => {
-      await createExpense.mutate(value);
+    onSubmit: ({ value }) => {
+      navigate({to: "/expenses"})
 
-      console.log(value);
+      createExpense.mutate(value);
     },
   });
 
